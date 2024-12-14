@@ -1,0 +1,105 @@
+import json
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load JSON file for the study
+file_path = '/Users/yung-peiko/Downloads/NCT02612493.json'  # Update with your file path
+with open(file_path, 'r') as file:
+    data = json.load(file)
+
+# Extract relevant sections for analysis
+outcomes = data['protocolSection']['outcomesModule']
+primary_outcomes = outcomes.get('primaryOutcomes', [])
+secondary_outcomes = outcomes.get('secondaryOutcomes', [])
+
+# Summarize primary outcomes
+primary_outcomes_df = pd.DataFrame(primary_outcomes)
+print("Primary Outcomes:")
+print(primary_outcomes_df[['measure', 'description', 'timeFrame']])
+
+# Summarize secondary outcomes
+secondary_outcomes_df = pd.DataFrame(secondary_outcomes)
+print("Secondary Outcomes Columns:", secondary_outcomes_df.columns)
+print("Secondary Outcomes:")
+if 'description' in secondary_outcomes_df.columns:
+    print(secondary_outcomes_df[['measure', 'description', 'timeFrame']])
+else:
+    print(secondary_outcomes_df[['measure', 'timeFrame']])
+
+# Simulated Data for Visualization: Insulin Dosage Reduction
+insulin_data = {
+    'Time': ['Before Surgery', '1 Year After Surgery', '5 Years After Surgery'],
+    'Insulin Dosage (IU/kg)': [1.2, 0.8, 0.6]  # Example reductions in insulin dosage
+}
+df_insulin = pd.DataFrame(insulin_data)
+
+# Visualization 1: Insulin Dosage Reduction Over Time
+plt.figure(figsize=(8, 6))
+sns.barplot(x='Time', y='Insulin Dosage (IU/kg)', data=df_insulin, palette='viridis')
+plt.title('Reduction in Insulin Dosage After Bariatric Surgery')
+plt.ylabel('Insulin Dosage (IU/kg)')
+plt.xlabel('Time')
+plt.show()
+
+# Simulated Data for Excess Weight Loss (%)
+weight_loss_data = {
+    'Time': ['1 Year After Surgery', '5 Years After Surgery'],
+    'Excess Weight Loss (%)': [50, 65]  # Example weight loss percentages
+}
+df_weight_loss = pd.DataFrame(weight_loss_data)
+
+# Visualization 2: Excess Weight Loss Over Time
+plt.figure(figsize=(8, 6))
+sns.barplot(x='Time', y='Excess Weight Loss (%)', data=df_weight_loss, palette='coolwarm')
+plt.title('Excess Weight Loss After Bariatric Surgery')
+plt.ylabel('Excess Weight Loss (%)')
+plt.xlabel('Time')
+plt.show()
+
+# Simulated Data for HgA1c Changes
+hba1c_data = {
+    'Time': ['Before Surgery', '1 Year After Surgery', '5 Years After Surgery'],
+    'HgA1c (%)': [9.0, 7.5, 7.0]  # Example reductions in HgA1c levels
+}
+df_hba1c = pd.DataFrame(hba1c_data)
+
+# Visualization 3: HgA1c Changes Over Time
+plt.figure(figsize=(8, 6))
+sns.lineplot(x='Time', y='HgA1c (%)', data=df_hba1c, marker='o', color='blue')
+plt.title('Change in HgA1c Levels After Bariatric Surgery')
+plt.ylabel('HgA1c (%)')
+plt.xlabel('Time')
+plt.show()
+
+# Simulated Data for Lipid Changes
+lipid_data = {
+    'Lipid Type': ['Cholesterol', 'Triglycerides', 'LDL', 'HDL'],
+    'Change (%)': [-20, -25, -30, +15]  # Example percentage changes
+}
+df_lipid = pd.DataFrame(lipid_data)
+
+# Visualization 4: Lipid Profile Changes
+plt.figure(figsize=(8, 6))
+sns.barplot(x='Lipid Type', y='Change (%)', data=df_lipid, palette='magma')
+plt.title('Lipid Profile Changes After Bariatric Surgery')
+plt.ylabel('Change (%)')
+plt.xlabel('Lipid Type')
+plt.axhline(0, color='gray', linestyle='--')
+plt.show()
+
+# Simulated Data for Correlation Between Weight Loss and Insulin Dosage Reduction
+correlation_data = {
+    'Excess Weight Loss (%)': [50, 55, 60, 65, 70],
+    'Insulin Dosage Reduction (IU/kg)': [0.4, 0.5, 0.6, 0.7, 0.8]
+}
+df_correlation = pd.DataFrame(correlation_data)
+
+# Visualization 5: Correlation Between Weight Loss and Insulin Dosage Reduction
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x='Excess Weight Loss (%)', y='Insulin Dosage Reduction (IU/kg)', data=df_correlation, color='purple')
+sns.lineplot(x='Excess Weight Loss (%)', y='Insulin Dosage Reduction (IU/kg)', data=df_correlation, color='orange')
+plt.title('Correlation Between Weight Loss and Insulin Dosage Reduction')
+plt.ylabel('Insulin Dosage Reduction (IU/kg)')
+plt.xlabel('Excess Weight Loss (%)')
+plt.show()
